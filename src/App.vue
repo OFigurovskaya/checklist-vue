@@ -32,6 +32,11 @@ export default {
       this.tasks.push({ id: this.message, name: this.message, done: false });
       this.message = '';
     },
+    remove(id) {
+      this.tasks = this.tasks.filter((task) => {
+        return task.id !== id;
+      })
+    }
   },
   computed: {
     completed() {
@@ -41,8 +46,8 @@ export default {
       return this.tasks.filter(task => !task.done);
     },
     count() {
-            return this.tasks.filter(task => !task.done).length;
-        },
+      return this.tasks.filter(task => !task.done).length;
+    },
   }
 }
 </script>
@@ -52,12 +57,12 @@ export default {
     <h1 class="main__title">Список дел</h1>
     <div>
       <h3 class="main__subtitle">Осталось дел: {{ count }}</h3>
-      <Task :tasks="unCompleted" />
+      <Task :tasks="unCompleted" @remove="remove" />
     </div>
     <input class="main__add" v-model="message" @keyup.enter="add">
     <button @click="add">Добавить</button>
     <h3 class="main__subtitle">Выполненные дела:</h3>
-    <Task :tasks="completed" />
+    <Task :tasks="completed" @remove="remove" />
   </div>
 </template>
 
@@ -100,6 +105,7 @@ export default {
 
 .main__subtitle {
   margin-bottom: 2%;
+
 }
 
 .main__add {
